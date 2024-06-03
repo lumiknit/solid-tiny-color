@@ -1,0 +1,18 @@
+type Num3 = [number, number, number];
+export type RGB = Num3;
+export type HSL = Num3;
+export type HSV = Num3;
+export declare const rgbToGrayscale: ([r, g, b]: Num3) => number;
+export declare const rgbToHSL: (rgb: Num3) => Num3;
+export declare const rgbToHSV: (rgb: Num3) => Num3;
+export declare const hsvToRGB: ([h, s, v]: Num3) => Num3;
+export declare const hslToRGB: ([h, s, l]: Num3) => Num3;
+export declare const hslToHSV: ([h, s, l]: Num3, v?: number) => Num3;
+export declare const hsvToHSL: ([h, s, v]: Num3, l?: number, m?: number) => Num3;
+export declare const hslToStyle: ([h, s, l]: Num3) => string;
+export declare const hsvToStyle: (hsv: Num3) => string;
+export declare const rgbToStyle: (rgb: Num3) => string;
+export declare const rgbToHash: (rgb: Num3) => string;
+export declare const luminance: (rgb: Num3) => number;
+export declare const contrast: (rgb1: Num3, rgb2: Num3) => number;
+export {};
