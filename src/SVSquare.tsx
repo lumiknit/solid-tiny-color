@@ -1,22 +1,17 @@
 import { Component } from 'solid-js';
 import { ColorBoard, ColorProps } from './ColorBoard';
 import { styleWH100 } from './style';
-import { HSV, hsvToRGB, rgbToHSV } from './color';
 
 const SVSquare: Component<ColorProps> = (props) => {
-	const hue = () => rgbToHSV(props.rgb)[0];
+	const hue = () => props.hsv[0];
 	return (
 		<ColorBoard
 			{...props}
 			onPick={(x, y) => {
-				const oldHSV = rgbToHSV(props.rgb);
-				const newHSV: HSV = [oldHSV[0], x, 1 - y];
-				props.onRGBChange?.(hsvToRGB(newHSV));
+				props.onHSVChange?.([props.hsv[0], x, 1 - y]);
 			}}
-			colorToPos={(rgb) => {
-				const hsv = rgbToHSV(rgb);
-				console.log(hsv);
-				return [hsv[1], 1 - hsv[2]];
+			colorToPos={([, s, v]) => {
+				return [s, 1 - v];
 			}}
 		>
 			<div

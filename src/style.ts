@@ -24,3 +24,5 @@ export const styleNoTouchAction: JSX.CSSProperties = {
 	'-ms-user-select': 'none',
 	'user-select': 'none',
 };
+
+export const gradHueConic: string = `conic-gradient(hsl(0 100% 50%) 0,hsl(120 100% 50%) 120deg,hsl(240 100% 50%) 240deg,hsl(0 100% 50%) 360deg)`;

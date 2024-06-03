@@ -1,12 +1,17 @@
-import { luminance, RGB } from './color';
+import { HSV, hsvToRGB, RGB, rgbToGrayscale } from './color';
 
 type Props = {
 	x: number; // 0.0 to 1.0
 	y: number; // 0.0 to 1.0
-	rgb: RGB;
+
+	/**  */
+	size?: string;
+	hsv: HSV;
 };
 
 const ColorPointer = (props: Props) => {
+	const rgb = () => hsvToRGB(props.hsv);
+	const size = () => props.size || '10px';
 	return (
 		<div
 			style={{
@@ -14,12 +19,12 @@ const ColorPointer = (props: Props) => {
 				position: 'absolute',
 				left: `${props.x * 100}%`,
 				top: `${props.y * 100}%`,
-				width: '10px',
-				height: '10px',
-				border: `2px solid ${luminance(props.rgb) > 0.5 ? 'black' : 'white'}`,
+				width: size(),
+				height: size(),
+				border: `2px solid ${rgbToGrayscale(rgb()) > 127 ? 'black' : 'white'}`,
 				'border-radius': '50%',
 				transform: 'translate(-50%, -50%)',
-				'background-color': `rgb(${props.rgb[0]},${props.rgb[1]},${props.rgb[2]})`,
+				'background-color': `rgb(${rgb()[0]},${rgb()[1]},${rgb()[2]})`,
 			}}
 		/>
 	);

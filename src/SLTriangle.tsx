@@ -1,14 +1,15 @@
 import { Component, onMount } from 'solid-js';
 import { ColorBoard, ColorProps } from './ColorBoard';
 import { styleWH100 } from './style';
-import { HSL, hslToRGB, rgbToHSL, rgbToHSV } from './color';
+import { HSL, hslToHSV, hsvToHSL } from './color';
 
-const renderSVTriangle = (
+const renderSLTriangle = (
 	ctx: CanvasRenderingContext2D,
 	width: number,
 	height: number
 ) => {
 	ctx.clearRect(0, 0, width, height);
+	ctx.fillStyle = '#fff';
 	for (let sy = 0; sy < height; sy++) {
 		const yr = sy / height;
 		const w = Math.round(2 * width * Math.min(yr, 1 - yr));
@@ -27,42 +28,49 @@ const renderSVTriangle = (
 	}
 };
 
-const SVTriangle: Component<ColorProps> = (props) => {
+const SLTriangle: Component<ColorProps> = (props) => {
 	let canvasRef: HTMLCanvasElement;
 
-	const hue = () => rgbToHSV(props.rgb)[0];
+	const hue = () => props.hsv[0];
 
 	onMount(() => {
 		// Render Red + SV Triangle
 		const ctx = canvasRef.getContext('2d');
-		if (ctx) renderSVTriangle(ctx, canvasRef.width, canvasRef.height);
+		if (ctx) renderSLTriangle(ctx, canvasRef.width, canvasRef.height);
 	});
 
 	return (
 		<ColorBoard
 			{...props}
 			onPick={(x, y) => {
-				const w = 2 * Math.min(y, 1 - y);
-				x = Math.min(w, x);
+				let w = 2 * Math.min(y, 1 - y);
+				if (x > w) {
+					// Find the nearest point on the edge
+					// Distance from the edge
+					const dx = x - w;
+					x -= dx * 0.3;
+					if (y > 0.5) y -= dx * 0.35;
+					else y += dx * 0.35;
+					w = 2 * Math.min(y, 1 - y);
+				}
 				if (w > 0) x /= w;
-				const oldHSL = rgbToHSL(props.rgb);
-				const newHSL: HSL = [oldHSL[0], x, 1 - y];
-				console.log(newHSL);
-				props.onRGBChange?.(hslToRGB(newHSL));
+				const newHSL: HSL = [props.hsv[0], x, 1 - y];
+				props.onHSVChange?.(hslToHSV(newHSL));
 			}}
-			colorToPos={(rgb) => {
-				const [, s, l] = rgbToHSL(rgb);
-				const y = 1 - l;
-				const w = 2 * Math.min(y, 1 - y);
-				return [w * s, y];
+			colorToPos={(hsv) => {
+				const [, s, l] = hsvToHSL(hsv);
+				return [2 * Math.min(l, 1 - l) * s, 1 - l];
 			}}
 		>
 			<canvas
 				ref={canvasRef!}
-				width={100}
-				height={100}
+				width={32}
+				height={32}
 				style={{
 					...styleWH100,
+					position: 'absolute',
+					left: 0,
+					top: 0,
 					'clip-path': 'polygon(0 0, 0 100%, 100% 50%)',
 					filter: `hue-rotate(${hue()}deg)`,
 				}}
@@ -71,4 +79,4 @@ const SVTriangle: Component<ColorProps> = (props) => {
 	);
 };
 
-export default SVTriangle;
+export default SLTriangle;

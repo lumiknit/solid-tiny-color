@@ -12,8 +12,12 @@
 }
 
 .h-bar {
-	height: 25px;
-	width: 300px;
+	display: block;
+	height: 1rem;
+	width: 100%;
+
+	border-radius: 0.25rem;
+	overflow: hidden;
 }
 
 .sq {
@@ -23,7 +27,58 @@
 	width: 200px;
 }
 
+.sq-large {
+	display: inline-block;
+	margin: 1rem;
+	height: 320px;
+	width: 320px;
+}
+
 .tri {
 	width: 173.21px;
 	height: 200px;
+}
+
+.c-hash-line {
+	text-align: center;
+}
+
+.c-hash {
+	font-family: monospace;
+	padding: 0.25rem 1rem;
+	border-radius: 0.5rem;
+}
+
+main {
+	background-color: var(--pico-background-color);
+	padding: 1.5rem !important;
+	box-shadow: 0 0 2.5rem rgba(0, 0, 0, 0.2);
+}
+
+fieldset.color input[type='text'] {
+	text-align: right;
+}
+
+hr {
+	margin: 0.5rem 0;
+}
+
+article.narrow {
+	width: 50%;
+	margin: 0 auto;
+}
+
+article {
+	text-align: center;
+}
+
+pre {
+	white-space: pre-wrap;
+	background-color: black;
+	color: white;
+	padding: 1rem;
+}
+
+img.badge {
+	border-radius: 0.5rem;
 }

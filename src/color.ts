@@ -4,12 +4,14 @@ export type RGB = Num3; // r, g, b: 0-255
 export type HSL = Num3; // h: 0-360, s, l: 0.0-1.0
 export type HSV = Num3; // h: 0-360, s, v: 0.0-1.0
 
+const multConst = (k: number, [a, b, c]: Num3): Num3 => [k * a, k * b, k * c];
+
 export const rgbToGrayscale = ([r, g, b]: RGB): number =>
 	r * 0.299 + g * 0.587 + b * 0.114;
 
-export const rgbToHSL = ([r, g, b]: RGB): HSL => {
-	(r /= 255), (g /= 255), (b /= 255);
-	const v = Math.max(r, g, b),
+export const rgbToHSL = (rgb: RGB): HSL => {
+	const [r, g, b] = multConst(1 / 255, rgb),
+		v = Math.max(r, g, b),
 		c = v - Math.min(r, g, b),
 		f = 1 - Math.abs(v + v - c - 1),
 		h =
@@ -17,9 +19,9 @@ export const rgbToHSL = ([r, g, b]: RGB): HSL => {
 	return [60 * (h < 0 ? h + 6 : h), f ? c / f : 0, (v + v - c) / 2];
 };
 
-export const rgbToHSV = ([r, g, b]: RGB): HSV => {
-	(r /= 255), (g /= 255), (b /= 255);
-	const v = Math.max(r, g, b),
+export const rgbToHSV = (rgb: RGB): HSV => {
+	const [r, g, b] = multConst(1 / 255, rgb),
+		v = Math.max(r, g, b),
 		c = v - Math.min(r, g, b),
 		h =
 			c && (v == r ? (g - b) / c : v == g ? 2 + (b - r) / c : 4 + (r - g) / c);
@@ -29,27 +31,37 @@ export const rgbToHSV = ([r, g, b]: RGB): HSV => {
 export const hsvToRGB = ([h, s, v]: HSV): RGB => {
 	const f = (n: number, k = (n + h / 60) % 6) =>
 		v - v * s * Math.max(Math.min(k, 4 - k, 1), 0);
-	return [255 * f(5), 255 * f(3), 255 * f(1)];
+	return multConst(255, [f(5), f(3), f(1)]);
 };
 
 export const hslToRGB = ([h, s, l]: HSL): RGB => {
 	const a = s * Math.min(l, 1 - l),
 		f = (n: number, k = (n + h / 30) % 12) =>
 			l - a * Math.max(Math.min(k - 3, 9 - k, 1), -1);
-	return [255 * f(0), 255 * f(8), 255 * f(4)];
+	return multConst(255, [f(0), f(8), f(4)]);
 };
 
-export const hslToHSV = ([h, s, l]: HSL, v = s * Math.min(l, 1 - l) + l) => [
-	h,
-	v ? 2 - (2 * l) / v : 0,
-	v,
-];
+export const hslToHSV = (
+	[h, s, l]: HSL,
+	v = s * Math.min(l, 1 - l) + l
+): HSV => [h, v ? 2 - (2 * l) / v : 0, v];
 
 export const hsvToHSL = (
 	[h, s, v]: HSV,
 	l = v - (v * s) / 2,
 	m = Math.min(l, 1 - l)
-) => [h, m ? (v - l) / m : 0, l];
+): HSL => [h, m ? (v - l) / m : 0, l];
+
+export const hslToStyle = ([h, s, l]: HSL): string =>
+	`hsl(${h} ${100 * s}%${100 * l}%)`;
+
+export const hsvToStyle = (hsv: HSV): string => hslToStyle(hsvToHSL(hsv));
+
+export const rgbToStyle = (rgb: RGB): string =>
+	`rgb(${rgb[0]},${rgb[1]},${rgb[2]})`;
+
+export const rgbToHash = (rgb: RGB): string =>
+	`#${rgb.map((c) => Math.floor(c).toString(16).padStart(2, '0')).join('')}`;
 
 export const luminance = (rgb: RGB): number => {
 	const [r, g, b] = rgb
