@@ -2,6 +2,7 @@ import { Component, onMount } from 'solid-js';
 import { ColorBoard, ColorProps } from './ColorBoard';
 import { styleAbsLT0, styleWH100 } from './style';
 import { HSL, hslToHSV, hsvToHSL } from './color';
+import { cross } from './utils';
 
 const renderSLTriangle = (
 	ctx: CanvasRenderingContext2D,
@@ -49,7 +50,7 @@ const SLTriangle: Component<ColorProps> = (props) => {
 				'clip-path': cp,
 			}}
 			onPick={(x, y, init) => {
-				let w = 2 * Math.min(y, 1 - y);
+				let w = 2 * cross(y);
 				if (x > w) {
 					if (init) return false;
 					// Find the nearest point on the edge
@@ -58,7 +59,7 @@ const SLTriangle: Component<ColorProps> = (props) => {
 					x -= dx * 0.3;
 					if (y > 0.5) y -= dx * 0.35;
 					else y += dx * 0.35;
-					w = 2 * Math.min(y, 1 - y);
+					w = 2 * cross(y);
 				}
 				if (w > 0) x /= w;
 				const newHSL: HSL = [props.hsv[0], x, 1 - y];
@@ -67,7 +68,7 @@ const SLTriangle: Component<ColorProps> = (props) => {
 			}}
 			colorToPos={(hsv) => {
 				const [, s, l] = hsvToHSL(hsv);
-				return [2 * Math.min(l, 1 - l) * s, 1 - l];
+				return [2 * cross(l) * s, 1 - l];
 			}}
 		>
 			<canvas

@@ -21,12 +21,14 @@ import {
 	rgbToGrayscale,
 	HSVWheel,
 	HSLWheel,
-} from 'solid-tiny-color';
-// } from '../../src';
+	AlphaSlider,
+	// } from 'solid-tiny-color';
+} from '../../src';
 // For preview, use solid-tiny-color instead of the above line
 
 const App: Component = () => {
 	const [hsv, setHSV_] = createSignal<HSV>([0, 0, 0]);
+	const [alpha, setAlpha] = createSignal(1);
 
 	const setHSV = (hsv: HSV) => {
 		setHSV_(hsv);
@@ -92,9 +94,16 @@ const App: Component = () => {
 			</div>
 			<p>
 				Solid Tiny Color is a simple but essential color picker components for
-				SolidJS.
+				SolidJS. It supports most modern browsers. (Old browsers are not
+				target.)
 				<a href="#install">See installation and usage!</a>
 			</p>
+			<h2> Features </h2>
+			<ul>
+				<li> Common and useful components: Slider and HSL/HSV color wheel. </li>
+				<li> Typescript! </li>
+				<li> I think it's small enough. (Unzipped size is about 8 kB) </li>
+			</ul>
 			<h2> Demo </h2>
 			<article class="narrow">
 				<div class="c-hash-line">
@@ -114,6 +123,7 @@ const App: Component = () => {
 					<div> R: {Math.floor(rgb()[0])} </div>
 					<div> G: {Math.floor(rgb()[1])} </div>
 					<div> B: {Math.floor(rgb()[2])} </div>
+					<div> A: {Math.floor(100 * alpha())}% </div>
 				</div>
 				<hr />
 				<div class="grid">
@@ -161,12 +171,19 @@ const App: Component = () => {
 			<div class="grid">
 				<article>
 					<header>
-						<b>RGB</b>
+						<b>RGBA</b>
 					</header>
 					<RGBSliderR class="h-bar" {...common()} />
 					<RGBSliderG class="h-bar" {...common()} />
 					<RGBSliderB class="h-bar" {...common()} />
+					<AlphaSlider
+						class="h-bar"
+						hsv={hsv()}
+						alpha={alpha()}
+						onAlphaChange={setAlpha}
+					/>
 					{Math.floor(rgb()[0])}, {Math.floor(rgb()[1])}, {Math.floor(rgb()[2])}
+					, {Math.floor(100 * alpha())}
 				</article>
 				<article>
 					<header>

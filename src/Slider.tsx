@@ -1,6 +1,6 @@
-import { Component } from 'solid-js';
+import { Component, JSX, mergeProps, Show, splitProps } from 'solid-js';
 import { ColorBoard, ColorProps } from './ColorBoard';
-import { styleWH100 } from './style';
+import { styleAbsLT0, styleBgCheckerboard, styleWH100 } from './style';
 import {
 	hslToHSV,
 	hslToStyle,
@@ -26,22 +26,40 @@ type Props = {
 	 * @returns Position. 0.0 is leftmost, 1.0 is rightmost.
 	 */
 	inverseColorMap: (color: HSV) => number;
+
+	/** Background image */
+	backgorundStyle?: JSX.CSSProperties;
 } & ColorProps;
 
 const Slider: Component<Props> = (props) => {
+	const [locals, colorProps] = splitProps(props, [
+		'colorMap',
+		'inverseColorMap',
+		'backgorundStyle',
+	]);
 	return (
 		<ColorBoard
-			{...props}
+			{...colorProps}
 			onPick={(x) => {
-				const hsv = props.colorMap(props.hsv, x)[1];
-				props.onHSVChange?.(hsv);
+				const hsv = locals.colorMap(colorProps.hsv, x)[1];
+				colorProps.onHSVChange?.(hsv);
 			}}
-			colorToPos={(hsv) => [props.inverseColorMap(hsv), 0.5]}
+			colorToPos={(hsv) => [locals.inverseColorMap(hsv), 0.5]}
 		>
+			<Show when={locals.backgorundStyle}>
+				<div
+					style={{
+						...styleAbsLT0,
+						...styleWH100,
+						...locals.backgorundStyle,
+					}}
+				/>
+			</Show>
 			<div
 				style={{
+					...styleAbsLT0,
 					...styleWH100,
-					'background-image': `linear-gradient(to right, ${[0, 0.25, 0.5, 0.75, 1].map((v) => props.colorMap(props.hsv, v)[0]).join(',')})`,
+					'background-image': `linear-gradient(to right, ${[0, 0.25, 0.5, 0.75, 1].map((v) => props.colorMap(props.hsv, v)[0]).join()})`,
 				}}
 			/>
 		</ColorBoard>
@@ -116,3 +134,41 @@ const HSLSlider =
 export const HSLSliderH = HSLSlider(0);
 export const HSLSliderS = HSLSlider(1);
 export const HSLSliderL = HSLSlider(2);
+
+type AlphaSliderProps = {
+	bgColor1?: string;
+	bgColor2?: string;
+
+	alpha: number;
+	onAlphaChange?: (alpha: number) => void;
+} & ColorProps;
+
+export const AlphaSlider: Component<AlphaSliderProps> = (props_) => {
+	const props = mergeProps(
+		{ bgColor1: 'darkgray', bgColor2: 'lightgray' },
+		props_
+	);
+	const [locals, colorProps] = splitProps(props, [
+		'bgColor1',
+		'bgColor2',
+		'alpha',
+		'onAlphaChange',
+		'hsv',
+		'onHSVChange',
+	]);
+	return (
+		<Slider
+			{...colorProps}
+			hsv={[0, locals.alpha, 0]}
+			onHSVChange={(hsv) => {
+				props.onAlphaChange?.(hsv[1]);
+			}}
+			colorMap={(_, p) => [
+				`rgba(${hsvToRGB(locals.hsv).join()},${p})`,
+				[0, p, 0],
+			]}
+			inverseColorMap={(hsv) => hsv[1]}
+			backgorundStyle={styleBgCheckerboard(locals.bgColor1, locals.bgColor2)}
+		/>
+	);
+};

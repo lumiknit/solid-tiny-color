@@ -16,7 +16,7 @@ export const styleBgCheckerboard = (
 	color2: string,
 	size = 16
 ): JSX.CSSProperties => ({
-	'background-image': `conic-gradient(${color1} 0, ${color2} 25%, ${color1} 25%, ${color1} 50%, ${color2} 50%, ${color2} 75%, ${color1} 75%, ${color1} 100%)`,
+	background: `repeating-conic-gradient(${color1} 0% 25%, ${color2} 25% 50%)`,
 	'background-size': `${size}px ${size}px`,
 });
 
@@ -31,4 +31,5 @@ export const styleNoTouchAction: JSX.CSSProperties = {
 	'user-select': 'none',
 };
 
-export const gradHueConic: string = `conic-gradient(hsl(0 100% 50%) 0,hsl(120 100% 50%) 120deg,hsl(240 100% 50%) 240deg,hsl(0 100% 50%) 360deg)`;
+const gd = (deg: number) => `hsl(${deg},100%,50%) ${deg}deg`;
+export const gradHueConic: string = `conic-gradient(${[0, 120, 240, 360].map(gd).join()})`;

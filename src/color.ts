@@ -1,3 +1,5 @@
+import { cross } from './utils';
+
 type Num3 = [number, number, number];
 
 export type RGB = Num3; // r, g, b: 0-255
@@ -35,21 +37,22 @@ export const hsvToRGB = ([h, s, v]: HSV): RGB => {
 };
 
 export const hslToRGB = ([h, s, l]: HSL): RGB => {
-	const a = s * Math.min(l, 1 - l),
+	const a = s * cross(l),
 		f = (n: number, k = (n + h / 30) % 12) =>
 			l - a * Math.max(Math.min(k - 3, 9 - k, 1), -1);
 	return multConst(255, [f(0), f(8), f(4)]);
 };
 
-export const hslToHSV = (
-	[h, s, l]: HSL,
-	v = s * Math.min(l, 1 - l) + l
-): HSV => [h, v ? 2 - (2 * l) / v : 0, v];
+export const hslToHSV = ([h, s, l]: HSL, v = s * cross(l) + l): HSV => [
+	h,
+	v ? 2 - (2 * l) / v : 0,
+	v,
+];
 
 export const hsvToHSL = (
 	[h, s, v]: HSV,
 	l = v - (v * s) / 2,
-	m = Math.min(l, 1 - l)
+	m = cross(l)
 ): HSL => [h, m ? (v - l) / m : 0, l];
 
 export const hslToStyle = ([h, s, l]: HSL): string =>

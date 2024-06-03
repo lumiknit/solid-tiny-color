@@ -13,6 +13,9 @@ importers:
       solid-js:
         specifier: ^1.8.15
         version: 1.8.17
+      solid-tiny-color:
+        specifier: ^0.1.0
+        version: 0.1.0(solid-js@1.8.17)
     devDependencies:
       typescript:
         specifier: ^5.2.2
@@ -873,6 +876,14 @@ packages:
     peerDependencies:
       solid-js: ^1.3
 
+  solid-tiny-color@0.1.0:
+    resolution:
+      {
+        integrity: sha512-tkd1revaNNPjBhyFuvWKXXptqGbT01JZR8GLpRpRdCwut4qrmQhD8ltPrQLEnxD2m4SRttru60duEcSvOKQlaw==,
+      }
+    peerDependencies:
+      solid-js: ^1.8.17
+
   source-map-js@1.2.0:
     resolution:
       {
@@ -1438,6 +1449,10 @@ snapshots:
       '@babel/generator': 7.24.6
       '@babel/helper-module-imports': 7.24.6
       '@babel/types': 7.24.6
+      solid-js: 1.8.17
+
+  solid-tiny-color@0.1.0(solid-js@1.8.17):
+    dependencies:
       solid-js: 1.8.17
 
   source-map-js@1.2.0: {}

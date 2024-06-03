@@ -11,6 +11,10 @@
 	-moz-osx-font-smoothing: grayscale;
 }
 
+body {
+	transition: background-color 0.4s ease;
+}
+
 .h-bar {
 	display: block;
 	height: 1rem;
