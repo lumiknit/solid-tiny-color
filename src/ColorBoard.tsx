@@ -2,6 +2,7 @@ import { Component, JSX, splitProps } from 'solid-js';
 import { HSV } from './color';
 import { styleNoTouchAction } from './style';
 import ColorPointer from './ColorPointer';
+import { clamp } from './utils';
 
 export type ColorProps = {
 	/** Current selected color */
@@ -65,11 +66,8 @@ export const ColorBoard: Component<ColorBoardProps> = (props) => {
 	) => {
 		if (!props.onPick || e.buttons === 0) return;
 		// Check pointer is down
-		const x = Math.min(1, Math.max(0, e.offsetX / e.currentTarget.offsetWidth));
-		const y = Math.min(
-			1,
-			Math.max(0, e.offsetY / e.currentTarget.offsetHeight)
-		);
+		const x = clamp(e.offsetX / e.currentTarget.offsetWidth, 0, 1),
+			y = clamp(e.offsetY / e.currentTarget.offsetHeight, 0, 1);
 		if (props.onPick(x, y, e.type === 'pointerdown') !== false) {
 			ref.setPointerCapture(e.pointerId);
 		} else {

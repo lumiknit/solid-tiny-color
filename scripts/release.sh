@@ -46,5 +46,8 @@ git push origin "release/$VERSION"
 git tag -a "v$VERSION" -m "Release v$VERSION"
 git push origin "v$VERSION"
 
-# 6. Return to the original branch
+# 6. pnpm publish
+pnpm publish
+
+# 7. Return to the original branch
 git checkout "$ORIGINAL_BRANCH"

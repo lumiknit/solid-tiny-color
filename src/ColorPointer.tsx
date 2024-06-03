@@ -1,4 +1,4 @@
-import { Component, JSX } from 'solid-js';
+import { Component, JSX, mergeProps } from 'solid-js';
 import { HSV, hsvToRGB, rgbToGrayscale, rgbToStyle } from './color';
 
 type Props = {
@@ -17,9 +17,9 @@ type Props = {
 	class?: string;
 };
 
-const ColorPointer: Component<Props> = (props) => {
+const ColorPointer: Component<Props> = (props_) => {
+	const props = mergeProps({ size: '10px' }, props_);
 	const rgb = () => hsvToRGB(props.hsv);
-	const size = () => props.size || '10px';
 	return (
 		<div
 			class={props.class}
@@ -28,8 +28,8 @@ const ColorPointer: Component<Props> = (props) => {
 				position: 'absolute',
 				left: `${props.pos[0] * 100}%`,
 				top: `${props.pos[1] * 100}%`,
-				width: size(),
-				height: size(),
+				width: props.size,
+				height: props.size,
 				border: `2px solid ${rgbToGrayscale(rgb()) > 127 ? 'black' : 'white'}`,
 				'border-radius': '50%',
 				transform: 'translate(-50%, -50%)',
