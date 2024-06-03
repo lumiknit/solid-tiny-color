@@ -31,7 +31,7 @@ const App: Component = () => {
 		document.body.style.backgroundColor = rgbToHash(hsvToRGB(hsv));
 	};
 
-	const [strokeWidth, setStrokeWidth] = createSignal(20);
+	const [strokeWidth, setStrokeWidth] = createSignal(0.2);
 	const [rotate, setRotate] = createSignal(true);
 
 	setHSV([
@@ -56,8 +56,9 @@ const App: Component = () => {
 					type="range"
 					value={strokeWidth()}
 					min={0}
-					max={100}
-					onInput={(e) => setStrokeWidth(parseInt(e.currentTarget.value))}
+					max={1}
+					step={0.01}
+					onInput={(e) => setStrokeWidth(parseFloat(e.currentTarget.value))}
 				/>
 			</label>
 		);

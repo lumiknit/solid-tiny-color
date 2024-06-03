@@ -4,7 +4,7 @@ import { gradHueConic, styleWH100 } from './style';
 import { degToRad } from './utils';
 
 type Props = {
-	/** Stroke width ratio, percent (0-100) */
+	/** Stroke width ratio, percent (0.0-1.0) */
 	strokeWidth: number;
 } & ColorProps;
 
@@ -18,7 +18,7 @@ const HueWheel: Component<Props> = (props) => {
 			}}
 			colorToPos={([h]) => {
 				const angle = h * degToRad;
-				const r = (1 - props.strokeWidth / 200) / 2;
+				const r = (1 - (100 * props.strokeWidth) / 200) / 2;
 				return [0.5 + r * Math.sin(angle), 0.5 - r * Math.cos(angle)];
 			}}
 		>
@@ -27,7 +27,7 @@ const HueWheel: Component<Props> = (props) => {
 					...styleWH100,
 					'background-image': gradHueConic,
 					'border-radius': '50%',
-					'mask-image': `radial-gradient(closest-side circle at center,transparent ${99.5 - props.strokeWidth}%,black ${100 - props.strokeWidth}%)`,
+					'mask-image': `radial-gradient(closest-side circle at center,transparent ${99.5 - 100 * props.strokeWidth}%,black ${100 - 100 * props.strokeWidth}%)`,
 				}}
 			/>
 		</ColorBoard>

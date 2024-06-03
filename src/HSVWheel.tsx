@@ -4,7 +4,7 @@ import SVSquare from './SVSquare';
 import HueWheel from './HueWheel';
 
 type Props = {
-	/** Stroke width ratio, percent (0-100) */
+	/** Stroke width ratio, percent (0.0-1.0) */
 	strokeWidth: number;
 
 	/** Enable rotation */
@@ -20,7 +20,7 @@ const HSVWheel: Component<Props> = (props) => {
 		'children',
 	]);
 
-	const squareWidth = () => (99 - props.strokeWidth) / Math.sqrt(2);
+	const squareWidth = () => (100 * (0.99 - props.strokeWidth)) / Math.sqrt(2);
 
 	return (
 		<div

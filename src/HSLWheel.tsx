@@ -4,7 +4,7 @@ import SLTriangle from './SLTriangle';
 import HueWheel from './HueWheel';
 
 type Props = {
-	/** Stroke width ratio, percent (0-100) */
+	/** Stroke width ratio, percent (0.0-1.0) */
 	strokeWidth: number;
 
 	/** Enable rotation */
@@ -20,7 +20,7 @@ const HSLWheel: Component<Props> = (props) => {
 		'children',
 	]);
 
-	const rad = () => (99 - props.strokeWidth) / 2;
+	const rad = () => 50 * (0.99 - props.strokeWidth);
 
 	return (
 		<div
