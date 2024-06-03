@@ -21,7 +21,9 @@ import {
 	rgbToGrayscale,
 	HSVWheel,
 	HSLWheel,
-} from '../../src';
+} from 'solid-tiny-color';
+// } from '../../src';
+// For preview, use solid-tiny-color instead of the above line
 
 const App: Component = () => {
 	const [hsv, setHSV_] = createSignal<HSV>([0, 0, 0]);

@@ -10,7 +10,8 @@
 	},
 	"dependencies": {
 		"@picocss/pico": "^2.0.6",
-		"solid-js": "^1.8.15"
+		"solid-js": "^1.8.15",
+		"solid-tiny-color": "^0.1.0"
 	},
 	"devDependencies": {
 		"typescript": "^5.2.2",
