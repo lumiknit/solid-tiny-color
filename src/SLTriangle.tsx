@@ -42,9 +42,14 @@ const SLTriangle: Component<ColorProps> = (props) => {
 	return (
 		<ColorBoard
 			{...props}
-			onPick={(x, y) => {
+			style={{
+				...(typeof props.style === 'object' ? props.style : {}),
+				'clip-path': 'polygon(0 0, 0 100%, 100% 50%)',
+			}}
+			onPick={(x, y, init) => {
 				let w = 2 * Math.min(y, 1 - y);
 				if (x > w) {
+					if(init) return false;
 					// Find the nearest point on the edge
 					// Distance from the edge
 					const dx = x - w;
@@ -56,6 +61,7 @@ const SLTriangle: Component<ColorProps> = (props) => {
 				if (w > 0) x /= w;
 				const newHSL: HSL = [props.hsv[0], x, 1 - y];
 				props.onHSVChange?.(hslToHSV(newHSL));
+				return true;
 			}}
 			colorToPos={(hsv) => {
 				const [, s, l] = hsvToHSL(hsv);

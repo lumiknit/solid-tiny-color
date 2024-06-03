@@ -22,8 +22,10 @@ export type ColorBoardProps = {
 
 	/** Event handler for specific xy is picked.
 	 * @param pos Position of picked. Each [x, y] is between 0.0 to 1.0.
+	 * @param init If true, this is down event, not move.
+	 * @returns If true or undefined, successfully color was picked, and capture the pointer.
 	 */
-	onPick?: (x: number, y: number) => void;
+	onPick?: (x: number, y: number, init?: boolean) => boolean | void;
 
 	/**
 	 * Color to position handler.
@@ -43,20 +45,20 @@ export const ColorBoard: Component<ColorBoardProps> = (props) => {
 	const handlePointerEvent: JSX.EventHandler<HTMLDivElement, PointerEvent> = (
 		e
 	) => {
-		if (props.onPick) {
-			// Check pointer is down
-			if (e.buttons === 0) return;
+		if (!props.onPick || e.buttons === 0) return;
+		// Check pointer is down
+		const x = Math.min(
+			1,
+			Math.max(0, e.offsetX / e.currentTarget.offsetWidth)
+		);
+		const y = Math.min(
+			1,
+			Math.max(0, e.offsetY / e.currentTarget.offsetHeight)
+		);
+		if(props.onPick(x, y, e.type === 'pointerdown') !== false) {
 			ref.setPointerCapture(e.pointerId);
-			const rect = (e.target as HTMLElement).getBoundingClientRect();
-			const x = Math.min(
-				1,
-				Math.max(0, e.offsetX / e.currentTarget.offsetWidth)
-			);
-			const y = Math.min(
-				1,
-				Math.max(0, e.offsetY / e.currentTarget.offsetHeight)
-			);
-			props.onPick(x, y);
+		} else {
+			ref.releasePointerCapture(e.pointerId);
 		}
 	};
 	return (
