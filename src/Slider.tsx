@@ -10,6 +10,7 @@ import {
 	hsvToStyle,
 	RGB,
 	rgbToHSV,
+	rgbToStyle,
 } from './color';
 
 type Props = {
@@ -63,7 +64,7 @@ const RGBSlider =
 				{...props}
 				colorMap={(hsv, p) => {
 					const rgb = rgbUpd(hsvToRGB(hsv), p);
-					return [`rgb(${rgb[0]}, ${rgb[1]}, ${rgb[2]})`, rgbToHSV(rgb)];
+					return [rgbToStyle(rgb), rgbToHSV(rgb)];
 				}}
 				inverseColorMap={(hsv) => hsvToRGB(hsv)[idx] / 255}
 			/>
@@ -74,19 +75,20 @@ export const RGBSliderR = RGBSlider(0);
 export const RGBSliderG = RGBSlider(1);
 export const RGBSliderB = RGBSlider(2);
 
+const hMaxs = [360, 1, 1];
+
 const HSVSlider =
 	(idx: 0 | 1 | 2): Component<ColorProps> =>
 	(props) => {
-		const maxs = [360, 1, 1];
 		return (
 			<Slider
 				{...props}
 				colorMap={(hsv, p) => {
 					const z: HSV = [...hsv];
-					z[idx] = p * maxs[idx];
+					z[idx] = p * hMaxs[idx];
 					return [hsvToStyle(z), z];
 				}}
-				inverseColorMap={(hsv) => hsv[idx] / maxs[idx]}
+				inverseColorMap={(hsv) => hsv[idx] / hMaxs[idx]}
 			/>
 		);
 	};
@@ -98,16 +100,15 @@ export const HSVSliderV = HSVSlider(2);
 const HSLSlider =
 	(idx: 0 | 1 | 2): Component<ColorProps> =>
 	(props) => {
-		const maxs = [360, 1, 1];
 		return (
 			<Slider
 				{...props}
 				colorMap={(hsv, p) => {
 					const hsl = hsvToHSL(hsv);
-					hsl[idx] = p * maxs[idx];
+					hsl[idx] = p * hMaxs[idx];
 					return [hslToStyle(hsl), hslToHSV(hsl)];
 				}}
-				inverseColorMap={(hsv) => hsvToHSL(hsv)[idx] / maxs[idx]}
+				inverseColorMap={(hsv) => hsvToHSL(hsv)[idx] / hMaxs[idx]}
 			/>
 		);
 	};

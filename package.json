@@ -2,19 +2,23 @@
   "name": "solid-tiny-color",
   "version": "0.1.0",
   "description": "SolidJS color picker components",
-  "author": "lumiknit (aasr4r4@gmail.com)",
+  "author": {
+    "name": "lumiknit",
+    "email": "aasr4r4@gmail.com",
+    "url": "https://lumiknit.github.io/"
+  },
   "license": "MIT",
   "main": "dist/cjs/index.js",
   "module": "dist/esm/index.js",
   "types": "dist/types/index.d.ts",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/lumiknit/solid-dry-color.git"
+    "url": "git+https://github.com/lumiknit/solid-tiny-color.git"
   },
   "bugs": {
-    "url": "https://github.com/lumiknit/solid-dry-color/issues"
+    "url": "https://github.com/lumiknit/solid-tiny-color/issues"
   },
-  "homepage": "https://github.com/lumiknit/solid-dry-color#readme",
+  "homepage": "https://lumiknit.github.io/demo/solid-tiny-color",
   "files": [
     "dist",
     "src"
@@ -44,13 +48,13 @@
   "devDependencies": {
     "@rollup/plugin-babel": "^6.0.4",
     "@rollup/plugin-terser": "^0.4.4",
-    "@types/node": "^20.12.7",
-    "prettier": "^3.2.5",
-    "rollup": "^4.17.0",
+    "@types/node": "^20.14.0",
+    "prettier": "^3.3.0",
+    "rollup": "^4.18.0",
     "rollup-plugin-visualizer": "^5.12.0",
     "rollup-preset-solid": "^2.0.1",
     "solid-js": "^1.8.17",
-    "terser": "^5.30.4",
+    "terser": "^5.31.0",
     "typescript": "^5.4.5"
   }
 }

@@ -26,10 +26,7 @@ const HSCircle: Component<ColorProps> = (props) => {
 			<div
 				style={{
 					...styleWH100,
-					'background-image': `
-					linear-gradient(rgba(0,0,0,${1 - value()}), rgb(0,0,0,${1 - value()})),
-					radial-gradient(closest-side, #ffff, #fff0)
-					,${gradHueConic}`,
+					'background-image': `linear-gradient(rgba(0,0,0,${1 - value()}), rgb(0,0,0,${1 - value()})),radial-gradient(closest-side, #ffff, #fff0),${gradHueConic}`,
 					'border-radius': '50%',
 				}}
 			/>

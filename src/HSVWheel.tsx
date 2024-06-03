@@ -2,6 +2,7 @@ import { Component, splitProps } from 'solid-js';
 import { ColorProps } from './ColorBoard';
 import SVSquare from './SVSquare';
 import HueWheel from './HueWheel';
+import { styleAbsLT0, styleWH100 } from './style';
 
 type Props = {
 	/** Stroke width ratio, percent (0.0-1.0) */
@@ -32,11 +33,8 @@ const HSVWheel: Component<Props> = (props) => {
 			<HueWheel
 				{...local}
 				style={{
-					position: 'absolute',
-					left: '0',
-					top: '0',
-					width: '100%',
-					height: '100%',
+					...styleAbsLT0,
+					...styleWH100,
 				}}
 			/>
 			<SVSquare

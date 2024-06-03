@@ -2,6 +2,7 @@ import { Component, splitProps } from 'solid-js';
 import { ColorProps } from './ColorBoard';
 import SLTriangle from './SLTriangle';
 import HueWheel from './HueWheel';
+import { styleAbsLT0, styleWH100 } from './style';
 
 type Props = {
 	/** Stroke width ratio, percent (0.0-1.0) */
@@ -32,11 +33,8 @@ const HSLWheel: Component<Props> = (props) => {
 			<HueWheel
 				{...local}
 				style={{
-					position: 'absolute',
-					left: '0',
-					top: '0',
-					width: '100%',
-					height: '100%',
+					...styleAbsLT0,
+					...styleWH100,
 				}}
 			/>
 			<SLTriangle
@@ -48,11 +46,7 @@ const HSLWheel: Component<Props> = (props) => {
 					width: `${rad() * 1.5}%`,
 					height: `${rad() * Math.sqrt(3)}%`,
 					transform: props.rotate
-						? `
-					translate(-16.7%, 0)
-					rotate(${props.hsv[0] - 90}deg)
-					translate(16.7%, 0)
-				`
+						? `translate(-16.7%, 0) rotate(${props.hsv[0] - 90}deg) translate(16.7%, 0)`
 						: 'none',
 				}}
 			/>

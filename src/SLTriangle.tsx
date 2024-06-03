@@ -1,6 +1,6 @@
 import { Component, onMount } from 'solid-js';
 import { ColorBoard, ColorProps } from './ColorBoard';
-import { styleWH100 } from './style';
+import { styleAbsLT0, styleWH100 } from './style';
 import { HSL, hslToHSV, hsvToHSL } from './color';
 
 const renderSLTriangle = (
@@ -39,17 +39,19 @@ const SLTriangle: Component<ColorProps> = (props) => {
 		if (ctx) renderSLTriangle(ctx, canvasRef.width, canvasRef.height);
 	});
 
+	const cp = 'polygon(0 0, 0 100%, 100% 50%)';
+
 	return (
 		<ColorBoard
 			{...props}
 			style={{
 				...(typeof props.style === 'object' ? props.style : {}),
-				'clip-path': 'polygon(0 0, 0 100%, 100% 50%)',
+				'clip-path': cp,
 			}}
 			onPick={(x, y, init) => {
 				let w = 2 * Math.min(y, 1 - y);
 				if (x > w) {
-					if(init) return false;
+					if (init) return false;
 					// Find the nearest point on the edge
 					// Distance from the edge
 					const dx = x - w;
@@ -74,10 +76,8 @@ const SLTriangle: Component<ColorProps> = (props) => {
 				height={32}
 				style={{
 					...styleWH100,
-					position: 'absolute',
-					left: 0,
-					top: 0,
-					'clip-path': 'polygon(0 0, 0 100%, 100% 50%)',
+					...styleAbsLT0,
+					'clip-path': cp,
 					filter: `hue-rotate(${hue()}deg)`,
 				}}
 			/>

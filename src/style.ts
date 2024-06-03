@@ -5,6 +5,12 @@ export const styleWH100: JSX.CSSProperties = {
 	height: '100%',
 };
 
+export const styleAbsLT0: JSX.CSSProperties = {
+	position: 'absolute',
+	left: '0',
+	top: '0',
+};
+
 export const styleBgCheckerboard = (
 	color1: string,
 	color2: string,

@@ -10,15 +10,13 @@ const SVSquare: Component<ColorProps> = (props) => {
 			onPick={(x, y) => {
 				props.onHSVChange?.([props.hsv[0], x, 1 - y]);
 			}}
-			colorToPos={([, s, v]) => {
-				return [s, 1 - v];
-			}}
+			colorToPos={([, s, v]) => [s, 1 - v]}
 		>
 			<div
 				style={{
 					...styleWH100,
 					'background-color': `hsl(${hue()}, 100%, 50%)`,
-					'background-image': `linear-gradient(to top, #000, rgba(0, 0, 0, 0)), linear-gradient(to right, #fff, rgba(255, 255, 255, 0))`,
+					'background-image': `linear-gradient(to top, #000, #0000), linear-gradient(to right, #fff, #fff0)`,
 				}}
 			/>
 		</ColorBoard>

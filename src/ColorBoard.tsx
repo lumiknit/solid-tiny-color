@@ -11,6 +11,12 @@ export type ColorProps = {
 	 * @param hsl Picked color.
 	 */
 	onHSVChange?: (hsv: HSV) => void;
+
+	/** Pointer style */
+	pointerStyle?: JSX.CSSProperties;
+
+	/** Pointer class */
+	pointerClass?: string;
 } & JSX.IntrinsicElements['div'];
 
 /**
@@ -33,6 +39,12 @@ export type ColorBoardProps = {
 	 * @returns Position of color. Each [x, y] is between 0.0 to 1.0.
 	 */
 	colorToPos: (hsv: HSV) => [number, number];
+
+	/** Pointer style */
+	pointerStyle?: JSX.CSSProperties;
+
+	/** Pointer class */
+	pointerClass?: string;
 } & JSX.IntrinsicElements['div'];
 
 /**
@@ -41,21 +53,24 @@ export type ColorBoardProps = {
  */
 export const ColorBoard: Component<ColorBoardProps> = (props) => {
 	let ref: HTMLDivElement;
-	const [, others] = splitProps(props, ['hsv', 'onPick', 'colorToPos']);
+	const [locals, others] = splitProps(props, [
+		'hsv',
+		'onPick',
+		'colorToPos',
+		'pointerStyle',
+		'pointerClass',
+	]);
 	const handlePointerEvent: JSX.EventHandler<HTMLDivElement, PointerEvent> = (
 		e
 	) => {
 		if (!props.onPick || e.buttons === 0) return;
 		// Check pointer is down
-		const x = Math.min(
-			1,
-			Math.max(0, e.offsetX / e.currentTarget.offsetWidth)
-		);
+		const x = Math.min(1, Math.max(0, e.offsetX / e.currentTarget.offsetWidth));
 		const y = Math.min(
 			1,
 			Math.max(0, e.offsetY / e.currentTarget.offsetHeight)
 		);
-		if(props.onPick(x, y, e.type === 'pointerdown') !== false) {
+		if (props.onPick(x, y, e.type === 'pointerdown') !== false) {
 			ref.setPointerCapture(e.pointerId);
 		} else {
 			ref.releasePointerCapture(e.pointerId);
@@ -75,9 +90,10 @@ export const ColorBoard: Component<ColorBoardProps> = (props) => {
 		>
 			{props.children}
 			<ColorPointer
-				x={props.colorToPos(props.hsv)[0]}
-				y={props.colorToPos(props.hsv)[1]}
+				pos={props.colorToPos(props.hsv)}
 				hsv={props.hsv}
+				style={locals.pointerStyle}
+				class={locals.pointerClass}
 			/>
 		</div>
 	);
